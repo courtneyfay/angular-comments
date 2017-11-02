@@ -26,11 +26,17 @@ import { CommentService } from './comment/comment.service';
 
 export class AppComponent {
 
-	comments = this.commentService.getComments();
-	commentText: string = "";
- 	commentAuthor: string = "";
+	componentComments = []; //this.commentService.getComments();
+	// commentText: string = "";
+ // 	commentAuthor: string = "";
 
 	constructor(public commentService: CommentService) {}
+
+	ngOnInit() {
+		this.commentService.onCommentUpdated((serviceComments) => {
+			this.componentComments = serviceComments;
+		})
+	}
 
 	addComment(newText: string, newAuthor: string) {
   	this.commentService.addComment(newText, newAuthor);

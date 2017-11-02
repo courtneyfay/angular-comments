@@ -6,9 +6,9 @@ DONE			getComments()
 DONE			addComment() 
 DONE			deleteComment()
 ????			onCommentUpdated()
+************OPTIONAL*******************
 ????			**setComments() 
-????			**editComment() 
-					**OPTIONAL
+????			**editComment() 		
 
 DONE	Your comment service should have the following variables: 
 				comments (array) 
@@ -27,7 +27,7 @@ export class CommentService {
  	commentAuthor: string = "";
  	editedText: boolean = false;
  	editedIndex: number = 0;
-	comments = [
+	serviceComments = [
 		{text: 'first comment!', author: 'anonymous'},
     {text: 'nice work!', author: 'Court'},
     {text: 'I would also like to congratulate you!', author: 'Marissa'}
@@ -37,18 +37,12 @@ export class CommentService {
   constructor() { }
   // this.subject.asObservable().subscribe(callback);
 
-
-  updateSubject() {
-  
+  private updateSubject(): void {
+  	this.subject.next();
   } 
-  /*
-	private updateSubject(): void {
-    this.subject.next(this.balance);
-  }
-  */
 
 	getComments() {
-		return this.comments;
+		return this.serviceComments;
 	}
 
 	addComment(newText, newAuthor) {
@@ -56,26 +50,32 @@ export class CommentService {
 
   	// if the comment is edited, then look for it in the array using the index and update it
   	if (this.editedText) {
-  		for (let i = 0; i < this.comments.length; i++) {
+  		for (let i = 0; i < this.serviceComments.length; i++) {
   			if (i === this.editedIndex) {
   				// over write it on the index where it exists currently
-  				this.comments.splice(this.editedIndex, 1, newComment);
+  				this.serviceComments.splice(this.editedIndex, 1, newComment);
   				this.editedIndex = 0;
   			}
   		}
-  		this.editedText = false;
   	} 
   	// otherwise (if it's a new comment), then add it to the array
   	else {
-  		this.comments.push(newComment);
-			this.editedText = false;
+  		this.serviceComments.push(newComment);
   	}
+  	this.editedText = false;
+  	this.updateSubject();
 	}
 
 	deleteComment(index) {
-		this.comments.splice(index, 1);
+		this.serviceComments.splice(index, 1);
+		this.updateSubject();
 	}
 
+	onCommentUpdated(callback): void {
+		this.subject.asObservable().subscribe(callback);
+	} 
+
+	// OPTIONAL FUNCTIONS
 	editComment(commentText, editComment, index) {
 		this.commentText = editComment.text;
 		this.commentAuthor = editComment.author;
@@ -86,14 +86,6 @@ export class CommentService {
 		console.log(index); 
 	}
 
-	onCommentUpdated() {
-
-	} 
-	/*
-	onBalanceUpdated(callback): void {
-    this.subject.asObservable().subscribe(callback);
-  }
-	*/
 	setComments() {
 
 	}
