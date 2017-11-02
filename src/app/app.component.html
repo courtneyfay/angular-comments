@@ -1,4 +1,15 @@
 <h1>Comments</h1>
+
+<!-- ADD COMMENT FORM -->
+<input [(ngModel)]="commentText" type="text" value="">
+<input [(ngModel)]="commentAuthor" type="text" value="">
+<input type="submit" value="submit" (click)='addComment(commentText,commentAuthor)'>
+
+<!-- SHOW ALL COMMENTS FROM ARRAY -->
 <ul>
-    <li *ngFor="let comment of comments">{{comment}}</li>
+  <li *ngFor="let comment of comments, let i = index" [attr.data-index]="i">
+		"{{ comment.text }}" -- {{ comment.author }}
+		<button (click)='editComment(comment, i)'>Edit</button>
+		<button (click)='deleteComment(i)'>Delete</button>
+  </li>
 </ul>
