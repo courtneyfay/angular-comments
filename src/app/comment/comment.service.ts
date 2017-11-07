@@ -3,8 +3,8 @@ TODO:
 		Your comment service should have the following methods: 
 ????			updateSubject() 
 DONE			getComments() 
-DONE			addComment() 
-DONE			deleteComment()
+????			addComment() 
+????			deleteComment()
 ????			onCommentUpdated()
 ************OPTIONAL*******************
 ????			**setComments() 
@@ -38,12 +38,39 @@ export class CommentService {
   // this.subject.asObservable().subscribe(callback);
 
   private updateSubject(): void {
-  	this.subject.next();
+  	this.subject.next(); //this.serviceComments
   } 
 
-	getComments() {
+	getComments(): object {
 		return this.serviceComments;
 	}
+
+	onCommentUpdated(callback): void {
+		this.subject.asObservable().subscribe(callback);
+	} 
+	/*
+	////////// BALANCE SERVICE //////////
+	private updateSubject(): void {
+    this.subject.next(this.balance);
+  }
+  onBalanceUpdated(callback): void {
+   	this.subject.asObservable().subscribe(callback);
+  }
+
+	////////// ITEMS SERVICE //////////
+	get(): Observable<Response> {
+    return this.http.get(this.apiUrl)
+    .map((res:Response) => res.json());
+  }
+
+  onItemsRetrieved(callback: any): void {
+    this.get().subscribe(callback);
+  }
+
+  getSelectedItem(): any {
+    return this.selectedItem;
+  }
+	*/
 
 	addComment(newText, newAuthor) {
 		let newComment = {text: newText, author: newAuthor}
@@ -71,10 +98,6 @@ export class CommentService {
 		this.updateSubject();
 	}
 
-	onCommentUpdated(callback): void {
-		this.subject.asObservable().subscribe(callback);
-	} 
-
 	// OPTIONAL FUNCTIONS
 	editComment(commentText, editComment, index) {
 		this.commentText = editComment.text;
@@ -89,6 +112,11 @@ export class CommentService {
 	setComments() {
 
 	}
+	/*
+	setSelectedItem(item: any): void {
+  this.selectedItem = item;
+  }
+	*/
 }
 
 

@@ -1,0 +1,16 @@
+input {
+	border-style: none; 
+	width: 30%;
+}
+
+.pristine {
+	border-style: solid;
+}
+
+.dirty {
+	border-style: solid;
+	width: 30%;
+}
+
+
+

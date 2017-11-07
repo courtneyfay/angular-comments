@@ -1,15 +1,41 @@
 <h1>Comments</h1>
 
 <!-- ADD COMMENT FORM -->
-<input [(ngModel)]="commentText" type="text" value="">
-<input [(ngModel)]="commentAuthor" type="text" value="">
-<input type="submit" value="submit" (click)='addComment(commentText,commentAuthor)'>
+<input [(ngModel)]="commentText" class="pristine" type="text" value="">
+<input [(ngModel)]="commentAuthor" class="pristine" type="text" value="">
+<input class="pristine" type="submit" value="submit" (click)='addComment(commentText,commentAuthor)'>
+
+<!-- CHECKING THE DATA! -->
+<!-- ul>
+  <li *ngFor="let comment of comments, let i = index" [attr.data-index]="i">
+  	{{ comment.text }}  {{ comment.author }}
+  </li>
+</ul> -->
 
 <!-- SHOW ALL COMMENTS FROM ARRAY -->
 <ul>
   <li *ngFor="let comment of comments, let i = index" [attr.data-index]="i">
-		"{{ comment.text }}" -- {{ comment.author }}
-		<button (click)='editComment(comment, i)'>Edit</button>
+
+		<!-- GET/EDIT COMMENTS -->
+		<input [(ngModel)]="comment.text" type="text" [class.dirty]="comment.editBoolean" value="{{ comment.text }}" [readonly]="!comment.editBoolean"> -- <input [(ngModel)]="comment.author" type="text" [class.dirty]="comment.editBoolean" value="{{ comment.author }}" [readonly]="!comment.editBoolean">
+
+		<!-- <pre *ngIf="trainer.name!=='Jessie'&&trainer.name!=='James'">{{pokemon|json}}</pre> -->
+		<!-- <div *ngIf="someCondition; else falsyTemplate">
+  <h1>Condition Passed!</h1>
+</div>
+ 
+<ng-template #falsyTemplate>
+  <h1>Condition Failed!</h1>
+</ng-template> -->
+		<!-- EDIT BUTTON -->
+		<span *ngIf="!comment.editBoolean; else falsyTemplate">
+			<button (click)='editComment(comment)'>Edit</button>
+		</span>
+		<ng-template #falsyTemplate>
+			<button (click)='saveComment(comment)'>Save</button>
+		</ng-template>
+
+		<!-- DELETE BUTTON -->
 		<button (click)='deleteComment(i)'>Delete</button>
   </li>
 </ul>

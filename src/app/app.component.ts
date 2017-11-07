@@ -25,77 +25,84 @@ import { CommentService } from './comment/comment.service';
 })
 
 export class AppComponent {
+	commentText: string = "";
+	commentAuthor: string = "";
 
-	componentComments = []; //this.commentService.getComments();
-	// commentText: string = "";
- // 	commentAuthor: string = "";
-
-	constructor(public commentService: CommentService) {}
-
-	ngOnInit() {
-		this.commentService.onCommentUpdated((serviceComments) => {
-			this.componentComments = serviceComments;
-		})
-	}
+	comments = [
+		{text: 'first comment!', author: 'anonymous', editBoolean: false},
+	  {text: 'nice work!', author: 'Court', editBoolean: false},
+	  {text: 'I would also like to congratulate you!', author: 'Marissa', editBoolean: false}
+	];
 
 	addComment(newText: string, newAuthor: string) {
-  	this.commentService.addComment(newText, newAuthor);
-  };
-
-  deleteComment(index: number) {
-		this.commentService.deleteComment(index);
+	 	let newComment = {text: newText, author: newAuthor, editBoolean: false}
+	 	this.comments.push(newComment);
+	};
+	
+	deleteComment(index) {
+		this.comments.splice(index, 1);
 	};
 
-	editComment(commentText: string, editComment: object, index: number) {
-		this.commentService.editComment(commentText,editComment,index);
-	}	
+	editComment(editComment) {
+		editComment.editBoolean = true; 
+	}
+	
+	saveComment(editComment) {
+		editComment.editBoolean = false; 
+	}
 }
 
+///////////////////////////////////////////////////////////////
+// OLD EDIT BUTTON ISH //
+/////////////////////////
+
+		// this.commentText = editComment.text;
+		// this.commentAuthor = editComment.author;
+		// this.editedText = true;
+		// this.editedIndex = index; 
+
+		// USED TO BE IN addComment function!! //
+		// if the comment is edited, then look for it in the array using the index and update it
+		// if (this.editedText) {
+		// 	for (let i = 0; i < this.comments.length; i++) {
+		// 		if (i === this.editedIndex) {
+		// 			// over write it on the index where it exists currently
+		// 			this.comments.splice(this.editedIndex, 1, newComment);
+		// 			this.editedIndex = 0;
+		// 		}
+		// 	}
+		// 	this.editedText = false;
+		// } 
+		// // otherwise (if it's a new comment), then add it to the array
+		// else {
+			
+	 // 	}
+
+
 //////////////////////////////////////////////////////////////
-// ISH THAT WORKED //
-/////////////////////
+// SERVICE WORKER ISH THAT AIN'T WORKIN //
+//////////////////////////////////////////
 
-// commentText: string = "";
-// commentAuthor: string = "";
-// editedText: boolean = false;
-// editedIndex: number = 0;
+// componentComments = this.commentService.getComments();
+// 	// commentText: string = "";
+//  // 	commentAuthor: string = "";
 
-// comments = [
-	// {text: 'first comment!', author: 'anonymous'},
-//   {text: 'nice work!', author: 'Court'},
-//   {text: 'I would also like to congratulate you!', author: 'Marissa'}
-// ];
+// 	constructor(public commentService: CommentService) {}
 
-/*addComment(newText: string, newAuthor: string) {
-  	
- 	let newComment = {text: newText, author: newAuthor}
+// 	ngOnInit() {
+// 		this.commentService.onCommentUpdated((serviceComments) => {
+// 			this.componentComments = serviceComments;
+// 		})
+// 	}
 
-	// if the comment is edited, then look for it in the array using the index and update it
-	if (this.editedText) {
-		for (let i = 0; i < this.comments.length; i++) {
-			if (i === this.editedIndex) {
-				// over write it on the index where it exists currently
-				this.comments.splice(this.editedIndex, 1, newComment);
-				this.editedIndex = 0;
-			}
-		}
-		this.editedText = false;
-	} 
-	// otherwise (if it's a new comment), then add it to the array
-	else {
-		this.comments.push(newComment);
-		this.editedText = false;
- 	}
-};*/
- 
+// 	addComment(newText: string, newAuthor: string) {
+//   	this.commentService.addComment(newText, newAuthor);
+//   };
 
-// deleteComment(index) {
-// 	this.comments.splice(index, 1);
-// };
+//   deleteComment(index: number) {
+// 		this.commentService.deleteComment(index);
+// 	};
 
-// editComment(editComment, index) {
-// 	this.commentText = editComment.text;
-// 	this.commentAuthor = editComment.author;
-// 	this.editedText = true;
-// 	this.editedIndex = index; 
-// }
+// 	editComment(commentText: string, editComment: object, index: number) {
+// 		this.commentService.editComment(commentText,editComment,index);
+// 	}	
